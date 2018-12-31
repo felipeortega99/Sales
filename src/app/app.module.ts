@@ -1,33 +1,52 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { ErrorHandler, NgModule } from '@angular/core';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
-
-import { MyApp } from './app.component';
-import { HomePage } from '../pages/home/home';
-import { ListPage } from '../pages/list/list';
-
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
+
+// Pages
+import { MyApp } from './app.component';
+import { HomePage, RegisterPage, LoginPage, AddSalePage } from '../pages/index.pages';
+
+ // Providers
+ import { AuthenticationProvider } from "../providers/index.providers";
+
+ // Firebase
+ import { AngularFireModule } from 'angularfire2';
+ import { AngularFireDatabaseModule, AngularFireDatabase } from 'angularfire2/database';
+ import { AngularFireAuthModule } from 'angularfire2/auth';
+
+ // Const
+ import { FIREBASE_CONFIG } from "../environments/environment";
 
 @NgModule({
   declarations: [
     MyApp,
     HomePage,
-    ListPage
+    LoginPage,
+    RegisterPage,
+    AddSalePage
   ],
   imports: [
     BrowserModule,
     IonicModule.forRoot(MyApp),
+    AngularFireModule.initializeApp(FIREBASE_CONFIG.firebase),
+    AngularFireDatabaseModule,
+    AngularFireAuthModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
     HomePage,
-    ListPage
+    LoginPage,
+    RegisterPage,
+    AddSalePage
   ],
   providers: [
     StatusBar,
     SplashScreen,
+    AuthenticationProvider,
+    AngularFireDatabase,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })

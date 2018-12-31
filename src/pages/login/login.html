@@ -1,0 +1,59 @@
+<ion-content padding>
+    <ion-list>
+        <form novalidate (ngSubmit)="logIn()" [formGroup]="loginForm">
+
+            <ion-item>
+                <ion-input type="email" placeholder="Email" formControlName="email"></ion-input>
+            </ion-item>
+
+            <!-- Validation messages for email input -->
+            <ng-container *ngFor="let validation of validationMessages.email">
+                <!-- <ion-item no-lines *ngIf="email.hasError(validation.type) && email.touched"> -->
+                <ion-item no-lines *ngIf="email.hasError(validation.type) && email.touched">
+                    <p class="error">{{validation.message}}</p>
+                </ion-item>
+            </ng-container>
+            <!-- End -->
+
+            <ion-item>
+                <ion-input type="password" placeholder="Contraseña" formControlName="password"></ion-input>
+            </ion-item>
+
+            <!-- Validation messages for password input -->
+            <ng-container *ngFor="let validation of validationMessages.password">
+                <ion-item no-lines *ngIf="password.hasError(validation.type) && password.touched">
+                    <p class="error">{{validation.message}}</p>
+                </ion-item>
+            </ng-container>
+            <!-- End -->
+
+            <div padding-left padding-right>
+                <button type="submit" (keyup.enter)="logIn()" ion-button block text-center text-capitalize color="black" [disabled]="loginForm.invalid">INGRESAR</button>
+            </div>
+
+        </form>
+    </ion-list>
+
+    <div padding-left padding-right>
+        <button ion-button color="google" icon-left block>
+          <ion-icon name="logo-google"></ion-icon>
+          Google
+        </button>
+    </div>
+
+    <div padding-left padding-right>
+        <button (click)="signInWithFacebook()" ion-button color="facebook" icon-left block>
+          <ion-icon name="logo-facebook"></ion-icon>
+          Facebook
+        </button>
+    </div>
+
+</ion-content>
+
+<ion-footer>
+    <ion-toolbar>
+        <p text-center>¿No estás registrado?
+            <a [navPush]="registerPage">Regístrate. </a>
+        </p>
+    </ion-toolbar>
+</ion-footer>

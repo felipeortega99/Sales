@@ -1,0 +1,56 @@
+<ion-header>
+
+    <ion-navbar>
+        <ion-buttons>
+            <button ion-button (click)="closeModal()">
+          <ion-icon name="close"></ion-icon> Cerrar
+        </button>
+        </ion-buttons>
+        <ion-title>Agregar venta</ion-title>
+    </ion-navbar>
+
+</ion-header>
+
+<ion-content padding>
+    <ion-list>
+        <form novalidate (ngSubmit)="addSale()" [formGroup]="addSaleForm">
+            <ion-item>
+                <ion-input type="text" placeholder="Nombre" formControlName="firstName" [class.error1]="!firstName.valid && firstName.dirty"></ion-input>
+            </ion-item>
+            <ion-item no-lines *ngIf="(firstName.hasError('required') || firstName.hasError('pattern')) && firstName.touched">
+                <div class="error" *ngIf="firstName.hasError('required') && firstName.touched">
+                    <p>Por favor ingresa un nombre</p>
+                </div>
+                <div class="error" *ngIf="firstName.hasError('pattern') && firstName.touched">
+                    <p>Por favor solo usa caracteres del alfabeto</p>
+                </div>
+            </ion-item>
+
+            <ion-item>
+                <ion-input type="text" placeholder="Apellido" formControlName="firstName" [class.error1]="!lastName.valid && lastName.dirty"></ion-input>
+            </ion-item>
+            <ion-item no-lines *ngIf="(lastName.hasError('required') || lastName.hasError('pattern')) && lastName.touched">
+                <div class="error" *ngIf="lastName.hasError('required') && lastName.touched">
+                    <p>Por favor ingresa un apellido</p>
+                </div>
+                <div class="error" *ngIf="lastName.hasError('pattern') && lastName.touched">
+                    <p>Por favor solo usa caracteres del alfabeto</p>
+                </div>
+            </ion-item>
+
+            <ion-item>
+                <ion-label>$</ion-label>
+                <ion-input type="text" placeholder="Total de la venta" [class.error1]="!total.valid && total.dirty"></ion-input>
+            </ion-item>
+            <ion-item no-lines *ngIf="total.hasError('required') && total.touched">
+                <div class="error">
+                    <p></p>
+                </div>
+            </ion-item>
+
+            <div padding-left padding-right>
+                <button type="submit" ion-button block color="black" [disabled]="addSaleForm.invalid">Agregar venta</button>
+            </div>
+        </form>
+    </ion-list>
+</ion-content>
