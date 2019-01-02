@@ -1,5 +1,7 @@
 {
   "name": "AdminSales",
-  "integrations": {},
+  "integrations": {
+    "cordova": {}
+  },
   "type": "ionic-angular"
 }

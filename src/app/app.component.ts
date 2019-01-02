@@ -8,6 +8,7 @@ import { LoginPage } from '../pages/login/login';
 
 // Services
 import { AuthenticationProvider } from '../providers/index.providers';
+import { AngularFireAuth } from 'angularfire2/auth';
 
 @Component({
   templateUrl: 'app.html',
@@ -21,22 +22,33 @@ export class MyApp {
 
   constructor(public platform: Platform, private app: App, public statusBar: StatusBar, 
     public splashScreen: SplashScreen,private toastCtrl: ToastController,
-    private menuCtrl: MenuController, private authService: AuthenticationProvider) {
+    private menuCtrl: MenuController, private authService: AuthenticationProvider,
+    private afAuth: AngularFireAuth) {
     this.initializeApp();
 
     // used for an example of ngFor and navigation
     this.pages = [
       { title: 'Inicio', component: HomePage }
     ];
-
-    this.menuCtrl.enable(false);
-    this.menuCtrl.close();
   }
 
   initializeApp() {
     this.platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
+      this.menuCtrl.enable(false);
+      this.menuCtrl.close();
+
+      const authObserver = this.afAuth.authState.subscribe(user => {
+        if (user) {
+          this.rootPage = HomePage;
+          authObserver.unsubscribe();
+        } else {
+          this.rootPage = LoginPage;
+          authObserver.unsubscribe();
+        }
+      });
+
       this.statusBar.styleDefault();
       this.splashScreen.hide();      
     });

@@ -26,7 +26,7 @@
                 </ion-item>
             </ng-container>
             <!-- End -->
-
+            <br>
             <div padding-left padding-right>
                 <button type="submit" (keyup.enter)="logIn()" ion-button block text-center text-capitalize color="black" [disabled]="loginForm.invalid">INGRESAR</button>
             </div>
@@ -34,12 +34,12 @@
         </form>
     </ion-list>
 
-    <div padding-left padding-right>
+    <!-- <div padding-left padding-right>
         <button ion-button color="google" icon-left block>
           <ion-icon name="logo-google"></ion-icon>
           Google
         </button>
-    </div>
+    </div> -->
 
     <div padding-left padding-right>
         <button (click)="signInWithFacebook()" ion-button color="facebook" icon-left block>
@@ -53,7 +53,7 @@
 <ion-footer>
     <ion-toolbar>
         <p text-center>¿No estás registrado?
-            <a [navPush]="registerPage">Regístrate. </a>
+            <a [navPush]="registerPage">Regístrate.</a>
         </p>
     </ion-toolbar>
 </ion-footer>

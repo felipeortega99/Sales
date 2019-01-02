@@ -1,18 +1,79 @@
-<!--
-  Generated template for the RegisterPage page.
-
-  See http://ionicframework.com/docs/components/#navigation for more info on
-  Ionic pages and navigation.
--->
-<ion-header>
-
-  <ion-navbar>
-    <ion-title>register</ion-title>
-  </ion-navbar>
-
-</ion-header>
-
-
 <ion-content padding>
+    <form novalidate (ngSubmit)="onSubmit()" [formGroup]="registerForm">
+        <ion-item>
+            <ion-input type="text" placeholder="Nombre" formControlName="firstName"></ion-input>
+        </ion-item>
+
+        <!-- Validation messages for firstName input -->
+        <ng-container *ngFor="let validation of validationMessages.firstName">
+            <ion-item no-lines *ngIf="firstName.hasError(validation.type) && firstName.touched">
+                <p class="error">{{validation.message}}</p>
+            </ion-item>
+        </ng-container>
+        <!-- End -->
+
+        <ion-item>
+            <ion-input type="text" placeholder="Apellido" formControlName="lastName"></ion-input>
+        </ion-item>
+
+        <!-- Validation messages for lastName input -->
+        <ng-container *ngFor="let validation of validationMessages.lastName">
+            <ion-item no-lines *ngIf="lastName.hasError(validation.type) && lastName.touched">
+                <p class="error">{{validation.message}}</p>
+            </ion-item>
+        </ng-container>
+        <!-- End -->
+
+        <ion-item>
+            <ion-input type="email" placeholder="Correo electrónico" formControlName="email"></ion-input>
+        </ion-item>
+
+        <!-- Validation messages for email input -->
+        <ng-container *ngFor="let validation of validationMessages.email">
+            <ion-item no-lines *ngIf="email.hasError(validation.type) && email.touched">
+                <p class="error">{{validation.message}}</p>
+            </ion-item>
+        </ng-container>
+        <!-- End -->
+
+        <ion-item>
+            <ion-input type="password" placeholder="Contraseña" formControlName="password"></ion-input>
+        </ion-item>
+
+        <!-- Validation messages for password input -->
+        <ng-container *ngFor="let validation of validationMessages.password">
+            <ion-item no-lines *ngIf="password.hasError(validation.type) && password.touched">
+                <p class="error">{{validation.message}}</p>
+            </ion-item>
+        </ng-container>
+        <!-- End -->
+
+        <ion-item>
+            <ion-input type="password" placeholder="Confirmar contraseña" formControlName="confirmPassword"></ion-input>
+        </ion-item>
+
+        <!-- Validation messages for confirmPassword input -->
+        <ng-container *ngFor="let validation of validationMessages.confirmPassword">
+            <ion-item no-lines *ngIf="confirmPassword.hasError(validation.type) && confirmPassword.touched">
+                <p class="error">{{validation.message}}</p>
+            </ion-item>
+        </ng-container>
+        <ion-item no-lines *ngIf="confirmPassword.hasError('mustMatch') && confirmPassword.touched">
+            <p class="error">Las contraseñas no coinciden.</p>
+        </ion-item>
+        <!-- End -->
+
+        <div padding-left padding-right>
+            <button type="submit" (keyup.enter)="onSubmit()" ion-button block text-center text-capitalize color="black" [disabled]="registerForm.invalid">CREAR CUENTA</button>
+        </div>
+    </form>
 
 </ion-content>
+
+<ion-footer>
+    <ion-toolbar>
+        <p text-center>¿Ya estás registrado?
+            <a navPop>Inicia Sesión.</a>
+        </p>
+    </ion-toolbar>
+</ion-footer>

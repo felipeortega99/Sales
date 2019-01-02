@@ -17,7 +17,7 @@ export const ValidationMessages = {
         { type: 'required', message: 'Se requiere una contraseña.' },
         { type: 'minlength', message: ' Se requiere minimo 6 caracteres.' }
     ],
-    'confirm_password':[
+    'confirmPassword':[
         { type: 'required', message: 'Confirma tu contraseña.' },
         { type: 'areEqual', message: 'Las contraseñas no coinciden.' }
     ],

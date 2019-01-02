@@ -3,18 +3,21 @@ import { ErrorHandler, NgModule } from '@angular/core';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
-
+import { ReactiveFormsModule } from '@angular/forms';
 // Pages
 import { MyApp } from './app.component';
 import { HomePage, RegisterPage, LoginPage, AddSalePage } from '../pages/index.pages';
 
  // Providers
- import { AuthenticationProvider } from "../providers/index.providers";
+ import { AuthenticationProvider, SalesProvider } from "../providers/index.providers";
 
  // Firebase
  import { AngularFireModule } from 'angularfire2';
  import { AngularFireDatabaseModule, AngularFireDatabase } from 'angularfire2/database';
  import { AngularFireAuthModule } from 'angularfire2/auth';
+
+// Plugins
+import { Facebook } from '@ionic-native/facebook';
 
  // Const
  import { FIREBASE_CONFIG } from "../environments/environment";
@@ -32,7 +35,8 @@ import { HomePage, RegisterPage, LoginPage, AddSalePage } from '../pages/index.p
     IonicModule.forRoot(MyApp),
     AngularFireModule.initializeApp(FIREBASE_CONFIG.firebase),
     AngularFireDatabaseModule,
-    AngularFireAuthModule
+    AngularFireAuthModule,
+    ReactiveFormsModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -47,7 +51,9 @@ import { HomePage, RegisterPage, LoginPage, AddSalePage } from '../pages/index.p
     SplashScreen,
     AuthenticationProvider,
     AngularFireDatabase,
-    {provide: ErrorHandler, useClass: IonicErrorHandler}
+    Facebook,
+    {provide: ErrorHandler, useClass: IonicErrorHandler},
+    SalesProvider
   ]
 })
 export class AppModule {}
