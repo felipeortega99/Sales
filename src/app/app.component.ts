@@ -17,7 +17,7 @@ import { AngularFireAuth } from 'angularfire2/auth';
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
 
-  rootPage: any = LoginPage;
+  rootPage: any = null;
   pages: Array<{title: string, component: any}>;
 
   constructor(public platform: Platform, private app: App, public statusBar: StatusBar, 
@@ -26,7 +26,6 @@ export class MyApp {
     private afAuth: AngularFireAuth) {
     this.initializeApp();
 
-    // used for an example of ngFor and navigation
     this.pages = [
       { title: 'Inicio', component: HomePage }
     ];
@@ -36,11 +35,12 @@ export class MyApp {
     this.platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
-      this.menuCtrl.enable(false);
-      this.menuCtrl.close();
+      this.menuCtrl.swipeEnable(false);
+      // this.menuCtrl.close();
 
       const authObserver = this.afAuth.authState.subscribe(user => {
         if (user) {
+          this.menuCtrl.swipeEnable(true);
           this.rootPage = HomePage;
           authObserver.unsubscribe();
         } else {
@@ -64,7 +64,7 @@ export class MyApp {
     this.authService.logout();
     this.app.getRootNav().setRoot(LoginPage);
     this.showToast("Sesión cerrada.")
-    this.menuCtrl.enable(false);
+    this.menuCtrl.swipeEnable(false);
     this.menuCtrl.close();
   }
 

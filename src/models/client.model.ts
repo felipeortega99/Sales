@@ -5,5 +5,6 @@ export interface ClientModel {
     firstName: string;
     lastName: string;
     debt?: number;
+    hasDebt: boolean;
     movements?: MovementModel[];
 }

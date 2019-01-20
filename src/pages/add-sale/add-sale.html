@@ -3,7 +3,7 @@
     <ion-navbar>
         <ion-buttons>
             <button ion-button (click)="closeModal()">
-          <ion-icon name="close"></ion-icon> Cerrar
+          <ion-icon name="close"></ion-icon>
         </button>
         </ion-buttons>
         <ion-title>Agregar venta</ion-title>
@@ -13,43 +13,46 @@
 
 <ion-content padding>
     <ion-list>
-        <form novalidate (ngSubmit)="addSale()" [formGroup]="addSaleForm">
+        <form novalidate (ngSubmit)="addClient()" [formGroup]="addSaleForm">
             <ion-item>
-                <ion-input type="text" placeholder="Nombre" formControlName="firstName" [class.error1]="!firstName.valid && firstName.dirty"></ion-input>
-            </ion-item>
-            <ion-item no-lines *ngIf="(firstName.hasError('required') || firstName.hasError('pattern')) && firstName.touched">
-                <div class="error" *ngIf="firstName.hasError('required') && firstName.touched">
-                    <p>Por favor ingresa un nombre</p>
-                </div>
-                <div class="error" *ngIf="firstName.hasError('pattern') && firstName.touched">
-                    <p>Por favor solo usa caracteres del alfabeto</p>
-                </div>
+                <ion-input type="text" placeholder="Nombre" formControlName="firstName"></ion-input>
             </ion-item>
 
+            <!-- Validation messages for firstName input -->
+            <ng-container *ngFor="let validation of validationMessages.firstName">
+                <ion-item no-lines *ngIf="firstName.hasError(validation.type) && firstName.touched">
+                    <p class="error">{{validation.message}}</p>
+                </ion-item>
+            </ng-container>
+            <!-- End -->
+
             <ion-item>
-                <ion-input type="text" placeholder="Apellido" formControlName="firstName" [class.error1]="!lastName.valid && lastName.dirty"></ion-input>
+                <ion-input type="text" placeholder="Apellido" formControlName="lastName"></ion-input>
             </ion-item>
-            <ion-item no-lines *ngIf="(lastName.hasError('required') || lastName.hasError('pattern')) && lastName.touched">
-                <div class="error" *ngIf="lastName.hasError('required') && lastName.touched">
-                    <p>Por favor ingresa un apellido</p>
-                </div>
-                <div class="error" *ngIf="lastName.hasError('pattern') && lastName.touched">
-                    <p>Por favor solo usa caracteres del alfabeto</p>
-                </div>
-            </ion-item>
+
+            <!-- Validation messages for lastName input -->
+            <ng-container *ngFor="let validation of validationMessages.lastName">
+                <ion-item no-lines *ngIf="lastName.hasError(validation.type) && lastName.touched">
+                    <p class="error">{{validation.message}}</p>
+                </ion-item>
+            </ng-container>
+            <!-- End -->
 
             <ion-item>
                 <ion-label>$</ion-label>
-                <ion-input type="text" placeholder="Total de la venta" [class.error1]="!total.valid && total.dirty"></ion-input>
-            </ion-item>
-            <ion-item no-lines *ngIf="total.hasError('required') && total.touched">
-                <div class="error">
-                    <p></p>
-                </div>
+                <ion-input type="text" placeholder="Total de la venta" formControlName="total"></ion-input>
             </ion-item>
 
+            <!-- Validation messages for lastName input -->
+            <ng-container *ngFor="let validation of validationMessages.total">
+                <ion-item no-lines *ngIf="total.hasError(validation.type) && total.touched">
+                    <p class="error">{{validation.message}}</p>
+                </ion-item>
+            </ng-container>
+            <!-- End -->
+            <br>
             <div padding-left padding-right>
-                <button type="submit" ion-button block color="black" [disabled]="addSaleForm.invalid">Agregar venta</button>
+                <button type="submit" (keyup.enter)="addClient()" ion-button block color="black" [disabled]="addSaleForm.invalid">Agregar venta</button>
             </div>
         </form>
     </ion-list>

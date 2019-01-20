@@ -2,16 +2,17 @@ import { Component } from '@angular/core';
 import { NavController, NavParams, LoadingController, ToastController, MenuController, Platform } from 'ionic-angular';
 import { FormBuilder, FormGroup, Validators, AbstractControl, FormControl } from "@angular/forms";
 import { ValidationMessages } from '../../validators/messages';
+import { HomePage } from '../index.pages';
+import { RegisterPage } from '../register/register';
 // Models
 import { UserModel } from '../../models/user.model';
 import { Profile } from './../../models/profile.model';
 // Firebase
 import { AngularFireAuth } from 'angularfire2/auth';
 import * as firebase from 'firebase/app';
-import { AuthenticationProvider } from '../../providers/index.providers';
-import { HomePage } from '../index.pages';
-import { RegisterPage } from '../register/register';
 import { User } from 'firebase/app';
+// Providers
+import { AuthenticationProvider } from '../../providers/index.providers';
 
 @Component({
   selector: 'page-login',
@@ -64,7 +65,7 @@ export class LoginPage {
 
     this.authProvider.signInWithEmailAndPassword(this.user).then(result => {
       loading.dismiss();
-      this.menuCtrl.enable(true);
+      this.menuCtrl.swipeEnable(true);
       this.navCtrl.setRoot(HomePage);
     }).catch(error => {
       loading.dismiss();
@@ -96,7 +97,7 @@ export class LoginPage {
         this.navCtrl.setRoot(HomePage);
       }).catch(error => {
         this.showToast("Algo salió mal, intentalo de nuevo.");
-        console.log("Error: "+JSON.stringify(error));
+        console.log("Error: "+error);
       });  
 
     }else{
@@ -112,7 +113,7 @@ export class LoginPage {
         this.navCtrl.setRoot(HomePage);
       }).catch(error => {
         this.showToast("Algo salió mal, intentalo de nuevo.");    
-        console.log("Error: "+JSON.stringify(error));
+        console.log("Error: "+error);
       });
     }
   }

@@ -1,8 +1,14 @@
 import { Component } from '@angular/core';
-import { IonicPage,  ViewController, ToastController, LoadingController} from 'ionic-angular';
-import { FormBuilder, FormGroup, Validators, AbstractControl } from "@angular/forms";
+import { IonicPage,  ViewController, ToastController, LoadingController, NavController} from 'ionic-angular';
+import { FormBuilder, FormGroup, Validators, AbstractControl, FormControl } from "@angular/forms";
+// Models
 import { ClientModel } from "../../models/client.model";
 import { MovementModel } from '../../models/movement.model';
+// Services
+import { SalesProvider, AuthenticationProvider } from '../../providers/index.providers';
+import { AngularFireDatabase } from '@angular/fire/database';
+// Validation messages
+import { ValidationMessages } from '../../validators/messages';
 
 @IonicPage()
 @Component({
@@ -10,7 +16,7 @@ import { MovementModel } from '../../models/movement.model';
   templateUrl: 'add-sale.html',
 })
 export class AddSalePage {
-
+validationMessages = ValidationMessages;
 addSaleForm: FormGroup;
 firstName: AbstractControl;
 lastName: AbstractControl;
@@ -22,11 +28,27 @@ date = new Date();
   constructor(private viewCtrl: ViewController, 
     public formbuilder: FormBuilder, 
     public toastCtrl: ToastController, 
-    public loadingCtrl: LoadingController) {
+    public loadingCtrl: LoadingController,
+    public navCtrl: NavController,
+    public salesProvider: SalesProvider,
+    public authProvider: AuthenticationProvider,
+    private afDb: AngularFireDatabase, 
+    private af: AngularFireDatabase) {
+      
       this.addSaleForm = formbuilder.group({
-        firstName:['', Validators.pattern('[a-zA-Z ]*'), Validators.required],
-        lastName: ['', Validators.pattern('[a-zA-Z ]*'), Validators.required],
-        total: ['', Validators.required]
+        firstName: new FormControl('', Validators.compose([
+          Validators.required, 
+          Validators.minLength(2),
+          Validators.pattern('[a-zA-Z ]*')
+        ])),
+        lastName: new FormControl('', Validators.compose([
+          Validators.required, 
+          Validators.minLength(2),
+          Validators.pattern('[a-zA-Z ]*')
+        ])),
+        total: new FormControl('', Validators.compose([
+          Validators.required
+        ]))
       });
       this.firstName = this.addSaleForm.controls['firstName'];
       this.lastName = this.addSaleForm.controls['lastName'];
@@ -41,15 +63,17 @@ date = new Date();
     this.viewCtrl.dismiss();
   }
 
-  addSale() {
-    // Movement
+  addClient() {
+    // Get values from the addSaleForm to create the Movement
     this.movement.title = "Venta";
     this.movement.date =  this.displayDateFormat();
     this.movement.total = this.addSaleForm.get('total').value;
-    // Client 
+    // Get the values from the addSaleForme to create the Client 
     this.client.firstName = this.addSaleForm.get('firstName').value;
     this.client.lastName = this.addSaleForm.get('lastName').value;
     this.client.debt = this.addSaleForm.get('total').value;
+    this.client.hasDebt = true;
+    this.client.movements = [];
     this.client.movements.push(this.movement);
 
     let loading = this.loadingCtrl.create({
@@ -57,8 +81,19 @@ date = new Date();
     });
     loading.present();
     // databse set
-    loading.dismiss();
-    this.showToast("Venta agregada con éxito.");
+    const clientsRef = this.af.list(`/users/${this.authProvider.currentUser.uid}/clients/`);
+    clientsRef.push(this.client).then(ref => {
+      this.client.key = ref.key;
+      this.afDb.object(`users/${this.authProvider.currentUser.uid}/clients/${ref.key}`).set(this.client)
+      .then(() => {
+        loading.dismiss();
+        this.showToast("Venta agregada con éxito.");
+      }).catch(error => {
+        this.showToast("Algo salió mal, intentalo de nuevo.");
+        console.log(error);
+      });
+    });  
+    this.viewCtrl.dismiss();
   }
 
   displayDateFormat(): string {

@@ -15,7 +15,7 @@ import { Facebook } from '@ionic-native/facebook';
 @Injectable()
 export class AuthenticationProvider {
   profile: Profile;
-  private currentUser: firebase.User;
+  public currentUser: firebase.User;
 
   constructor(private afAuth: AngularFireAuth, private toastCtrl: ToastController,
     private afDb: AngularFireDatabase, private fb: Facebook) {
@@ -50,7 +50,7 @@ export class AuthenticationProvider {
   }
 
   createProfile(profile: Profile) {
-    this.afAuth.authState.take(1).subscribe(auth => {
+    this.afAuth.authState.subscribe(auth => {
         this.afDb.object(`/users/${auth.uid}`).set(profile).then(() => {
   
         }).catch(error => {
@@ -62,11 +62,13 @@ export class AuthenticationProvider {
 
   isUserInDB(): boolean {    
     let userEmail;
-    this.afDb.database.ref(`/users/${this.currentUser.uid}/email`)
-    .once('value').then((snapshot) => {  
-      userEmail = snapshot.val() || 'Anonymous';  
-    }).catch(error => {
-      console.log('Eror at getting the user email: '+error)
+    this.afAuth.authState.subscribe((user: User) => {        
+      this.afDb.database.ref(`/users/${user.uid}/email`)
+      .once('value').then((snapshot) => {  
+        userEmail = snapshot.val() || 'Anonymous';  
+      }).catch(error => {
+        console.log('Eror at getting the user email: '+error)
+      });    
     });
     console.log(userEmail == 'Anonymous' || userEmail == null? false: true);
     return userEmail == 'Anonymous' || userEmail == null? false: true;
