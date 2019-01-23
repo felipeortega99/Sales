@@ -1,0 +1,102 @@
+<ion-header>
+    <ion-navbar>
+        <ion-buttons>
+            <button ion-button (click)="closeModal()">
+                <ion-icon name="close"></ion-icon>
+            </button>
+        </ion-buttons>
+        <ion-title text-center>{{client.firstName+' '+client.lastName}}</ion-title>
+    </ion-navbar>
+</ion-header>
+
+
+<ion-content>
+    <div class="card-movement-balance">
+        <ion-card text-center>
+            <!-- <img src="img/card-saopaolo.png"/> -->
+            <div class="card-title">${{client.debt}}
+                <p>.00 MXN</p>
+            </div>
+            <div class="card-subtitle">Cuenta actual</div>
+        </ion-card>
+    </div>
+    <!-- Segment buttons -->
+    <div padding>
+        <ion-segment [(ngModel)]="movement">
+            <ion-segment-button value="todos">
+                Todos
+            </ion-segment-button>
+            <ion-segment-button value="ventas">
+                Ventas
+            </ion-segment-button>
+            <ion-segment-button value="abonos">
+                Abonos
+            </ion-segment-button>
+        </ion-segment>
+    </div>
+    <!-- Change case depending on the segment -->
+    <div [ngSwitch]="movement">
+        <ng-container *ngSwitchCase="'todos'">
+            <ion-list>
+                <ng-container *ngFor="let movement of client.movements">
+                    <ion-list-header>
+                        {{movement.date}}
+                    </ion-list-header>
+                    <ion-item *ngIf="movement.title=='abono'">
+                        <h2 class="total-row">${{movement.total}}
+                            <p>.00 MXN</p>
+                        </h2>
+                        <ion-icon item-end name="arrow-round-up"></ion-icon>
+                    </ion-item>
+                    <ion-item *ngIf="movement.title=='venta' ">
+                        <h2 class="total-row">${{movement.total}}
+                            <p>.00 MXN</p>
+                        </h2>
+                        <ion-icon item-end name="arrow-round-down"></ion-icon>
+                    </ion-item>
+                </ng-container>
+            </ion-list>
+        </ng-container>
+
+        <ng-container *ngSwitchCase="'ventas'">
+            <ion-list>
+                <ng-container *ngFor="let movement of client.movements">
+                    <ng-container *ngIf="movement.title=='venta' ">
+                        <ion-list-header>
+                            {{movement.date}}
+                        </ion-list-header>
+                        <ion-item>
+                            <h2 class="total-row">${{movement.total}}
+                                <p>.00 MXN</p>
+                            </h2>
+                            <ion-icon item-end name="arrow-round-down"></ion-icon>
+                        </ion-item>
+                    </ng-container>
+                </ng-container>
+            </ion-list>
+        </ng-container>
+
+        <ng-container *ngSwitchCase="'abonos'">
+            <ng-container *ngIf="movementsLength>1;else other_content">
+                <ion-list>
+                    <ng-container *ngFor="let movement of client.movements">
+                        <ng-container *ngIf="movement.title=='abono'">
+                            <ion-list-header>
+                                {{movement.date}}
+                            </ion-list-header>
+                            <ion-item>
+                                <h2 class="total-row">${{movement.total}}
+                                    <p>.00 MXN</p>
+                                </h2>
+                                <ion-icon item-end name="arrow-round-up"></ion-icon>
+                            </ion-item>
+                        </ng-container>
+                    </ng-container>
+                </ion-list>
+            </ng-container>
+            <ng-template #other_content>
+                <!-- TODO: Mostrar mensaje que no hay abonos -->
+            </ng-template>
+        </ng-container>
+    </div>
+</ion-content>

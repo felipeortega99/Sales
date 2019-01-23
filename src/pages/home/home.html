@@ -3,33 +3,32 @@
         <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-        <ion-title>Pendientes</ion-title>
+        <ion-title>Ventas</ion-title>
     </ion-navbar>
 </ion-header>
 
-<ion-content padding>
+<ion-content>
     <ion-searchbar></ion-searchbar>
     <ng-container *ngIf="theresSale">
-        <ion-item-group *ngFor="let group of groupedContacts">
-            <ion-item-divider color="light">{{group.letter}}</ion-item-divider>
-            <ion-item-sliding *ngFor="let contact of group.contacts">
-                <ion-item>
-                    <h2>{{contact.firstName +" "+ contact.lastName}}</h2>
-                    <p item-end>${{contact.debt}}</p>
-                </ion-item>
-                <ion-item-options side="left">
-                    <button ion-button color="secondary">
-                    <ion-icon name="add"></ion-icon><ion-icon name="logo-usd"></ion-icon>
-                </button>
-                    <button ion-button color="secondary">
-                    <ion-icon name="remove"></ion-icon><ion-icon name="logo-usd"></ion-icon>                  
-                </button>
-                    <button ion-button color="light">
-                    <<ion-icon name="settings"></ion-icon>                  
-                </button>
-                </ion-item-options>
-            </ion-item-sliding>
-        </ion-item-group>
+        <ion-list>
+            <ng-container *ngFor="let group of groupedContacts">
+                <ion-item-divider color="light">{{group.letter}}</ion-item-divider>
+                <ion-item-sliding *ngFor="let contact of group.contacts">
+                    <ion-item (click)="openMovements(contact)">
+                        <h2>{{contact.firstName +' '+ contact.lastName}}</h2>
+                        <p item-end>${{contact.debt}}</p>
+                    </ion-item>
+                    <ion-item-options side="right">
+                        <button ion-button color="secondary">
+                            <ion-icon class="custom-icon" name="add"></ion-icon>
+                        </button>
+                        <button ion-button color="primary">
+                            <ion-icon xlass="custom-icon" name="remove"></ion-icon>
+                        </button>
+                    </ion-item-options>
+                </ion-item-sliding>
+            </ng-container>
+        </ion-list>
     </ng-container>
 
     <ion-card *ngIf="!theresSale">

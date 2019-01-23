@@ -6,10 +6,10 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { ReactiveFormsModule } from '@angular/forms';
 // Pages
 import { MyApp } from './app.component';
-import { HomePage, RegisterPage, LoginPage, AddSalePage } from '../pages/index.pages';
+import { HomePage, RegisterPage, LoginPage, AddSalePage, MovementsPage } from '../pages/index.pages';
 
  // Providers
- import { AuthenticationProvider, SalesProvider } from "../providers/index.providers";
+ import { AuthenticationProvider } from "../providers/index.providers";
 
  // Firebase
  import { AngularFireModule } from 'angularfire2';
@@ -28,7 +28,8 @@ import { Facebook } from '@ionic-native/facebook';
     HomePage,
     LoginPage,
     RegisterPage,
-    AddSalePage
+    AddSalePage,
+    MovementsPage
   ],
   imports: [
     BrowserModule,
@@ -44,7 +45,8 @@ import { Facebook } from '@ionic-native/facebook';
     HomePage,
     LoginPage,
     RegisterPage,
-    AddSalePage
+    AddSalePage,
+    MovementsPage
   ],
   providers: [
     StatusBar,
@@ -52,8 +54,7 @@ import { Facebook } from '@ionic-native/facebook';
     AuthenticationProvider,
     AngularFireDatabase,
     Facebook,
-    {provide: ErrorHandler, useClass: IonicErrorHandler},
-    SalesProvider
+    {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })
 export class AppModule {}

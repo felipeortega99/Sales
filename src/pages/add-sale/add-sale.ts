@@ -5,7 +5,7 @@ import { FormBuilder, FormGroup, Validators, AbstractControl, FormControl } from
 import { ClientModel } from "../../models/client.model";
 import { MovementModel } from '../../models/movement.model';
 // Services
-import { SalesProvider, AuthenticationProvider } from '../../providers/index.providers';
+import { AuthenticationProvider } from '../../providers/index.providers';
 import { AngularFireDatabase } from '@angular/fire/database';
 // Validation messages
 import { ValidationMessages } from '../../validators/messages';
@@ -30,7 +30,6 @@ date = new Date();
     public toastCtrl: ToastController, 
     public loadingCtrl: LoadingController,
     public navCtrl: NavController,
-    public salesProvider: SalesProvider,
     public authProvider: AuthenticationProvider,
     private afDb: AngularFireDatabase, 
     private af: AngularFireDatabase) {
@@ -52,11 +51,7 @@ date = new Date();
       });
       this.firstName = this.addSaleForm.controls['firstName'];
       this.lastName = this.addSaleForm.controls['lastName'];
-      this.total = this.addSaleForm.controls['total'];
-  }
-
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad AddSalePage');
+      this.total = this.addSaleForm.controls['total'];      
   }
 
   closeModal() {
@@ -65,7 +60,7 @@ date = new Date();
 
   addClient() {
     // Get values from the addSaleForm to create the Movement
-    this.movement.title = "Venta";
+    this.movement.title = "venta";
     this.movement.date =  this.displayDateFormat();
     this.movement.total = this.addSaleForm.get('total').value;
     // Get the values from the addSaleForme to create the Client 

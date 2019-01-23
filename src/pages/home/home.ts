@@ -1,9 +1,13 @@
 import { Component, EventEmitter } from '@angular/core';
 import { NavController, ModalController } from 'ionic-angular';
+// Pages
 import { AddSalePage } from "./../index.pages";
+import { MovementsPage } from '../movements/movements';
 // Providers
-import { AuthenticationProvider, SalesProvider } from '../../providers/index.providers';
+import { AuthenticationProvider } from '../../providers/index.providers';
 import { AngularFireDatabase } from 'angularfire2/database';
+// Models
+import { ClientModel } from '../../models/client.model';
 
 @Component({
   selector: 'page-home',
@@ -13,8 +17,9 @@ export class HomePage {
   theresSale : boolean = false;
   sales: any[] = [];
   groupedContacts = [];
-  constructor( private modalCtrl:ModalController, public authProvider: AuthenticationProvider,
-    public salesProvider: SalesProvider, private afDb: AngularFireDatabase ) {    
+  constructor( private modalCtrl:ModalController, 
+    public authProvider: AuthenticationProvider,
+    private afDb: AngularFireDatabase ) {    
     this.afDb.list(`/users/${this.authProvider.currentUser.uid}/clients`, ref => ref.orderByChild("hasDebt").equalTo(true))
     .valueChanges()
     .subscribe(clients => {
@@ -33,6 +38,11 @@ export class HomePage {
   openModal() {
     let modal = this.modalCtrl.create(AddSalePage);
     modal.present();
+  }
+
+  openMovements(currentClient: ClientModel) {
+    let movementsModal = this.modalCtrl.create(MovementsPage,{client: currentClient});
+    movementsModal.present();
   }
 
   // Sort contacts alphabetically with sort method 
@@ -66,6 +76,14 @@ export class HomePage {
       newGroup.contacts.push(sortedContacts[index]);
     }
      this.groupedContacts.push(newGroup);
+  }
+
+  addPayment() {
+
+  }
+
+  addSale() {
+    
   }
 
 }
